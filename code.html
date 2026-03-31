@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voro Web Services — Modern Web Development</title>
+  <meta name="description" content="Voro Web Services builds modern, high-performance websites for businesses and individuals. Clean UI, fast delivery, real results." />
+  <meta name="keywords" content="web development, UI/UX design, portfolio websites, business websites, freelance web developer" />
+  <meta property="og:title" content="Voro Web Services" />
+  <meta property="og:description" content="We build modern, high-quality websites that drive results." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    :root {
+      --bg: #f0f4ff;
+      --bg2: #e8eeff;
+      --bg3: #ffffff;
+      --surface: #ffffff;
+      --surface2: #eef1ff;
+      --border: rgba(99,102,241,0.13);
+      --border2: rgba(99,102,241,0.22);
+      --accent: #4f46e5;
+      --accent2: #ec4899;
+      --accent3: #06b6d4;
+      --grad: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+      --grad2: linear-gradient(135deg, #06b6d4 0%, #4f46e5 100%);
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --radius: 16px;
+      --radius2: 24px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 0;
+      transition: background 0.4s, box-shadow 0.4s, padding 0.4s;
+    }
+    #navbar.scrolled {
+      background: rgba(240,244,255,0.92);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 var(--border);
+    }
+    .nav-inner {
+      max-width: 1180px; margin: 0 auto; padding: 22px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: padding 0.4s;
+    }
+    #navbar.scrolled .nav-inner { padding-top: 16px; padding-bottom: 16px; }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.35rem;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .nav-logo span { opacity: 0.6; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500; color: var(--text2);
+      transition: color 0.2s; letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--grad);
+      color: #fff !important;
+      padding: 10px 22px; border-radius: 100px;
+      font-size: 0.875rem !important; font-weight: 600 !important;
+      transition: opacity 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px) !important; }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; top: 0;
+      background: rgba(240,244,255,0.98); backdrop-filter: blur(20px);
+      z-index: 999; flex-direction: column; align-items: center;
+      justify-content: center; gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 700; color: var(--text2);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+    .mobile-close {
+      position: absolute; top: 28px; right: 28px;
+      font-size: 1.5rem; cursor: pointer; color: var(--text2);
+      background: none; border: none;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 120px 0 80px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hero-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); opacity: 0.35;
+    }
+    .hero-blob-1 {
+      width: 700px; height: 700px;
+      background: #a5b4fc;
+      top: -200px; left: -200px;
+      animation: blobFloat 12s ease-in-out infinite;
+    }
+    .hero-blob-2 {
+      width: 500px; height: 500px;
+      background: #f9a8d4;
+      bottom: -100px; right: -100px;
+      animation: blobFloat 16s ease-in-out infinite reverse;
+    }
+    .hero-blob-3 {
+      width: 300px; height: 300px;
+      background: #67e8f9;
+      top: 40%; left: 50%;
+      animation: blobFloat 10s ease-in-out infinite 4s;
+    }
+    @keyframes blobFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(30px,-30px) scale(1.05); }
+      66% { transform: translate(-20px,20px) scale(0.95); }
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(79,70,229,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,70,229,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff;
+      border: 1px solid var(--border2);
+      padding: 7px 16px; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 500; color: var(--text2);
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease both;
+      box-shadow: 0 2px 12px rgba(79,70,229,0.08);
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.08;
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+    .hero-title .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-title .grad-text2 {
+      background: var(--grad2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--text2); max-width: 560px;
+      line-height: 1.7; margin-bottom: 44px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--grad);
+      color: #fff; font-weight: 600; font-size: 0.95rem;
+      padding: 14px 30px; border-radius: 100px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(79,142,255,0.25);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(79,142,255,0.35); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff;
+      border: 1px solid var(--border2);
+      color: var(--text); font-weight: 500; font-size: 0.95rem;
+      padding: 14px 30px; border-radius: 100px;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(79,70,229,0.06);
+    }
+    .btn-secondary:hover { background: var(--surface2); border-color: var(--accent); box-shadow: 0 4px 16px rgba(79,70,229,0.12); }
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 64px;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+    .hero-stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label { font-size: 0.82rem; color: var(--text3); margin-top: 2px; }
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text3); font-size: 0.75rem;
+      animation: fadeUp 1s ease 0.8s both;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollLine { 0%,100%{transform:scaleY(1);opacity:1;} 50%{transform:scaleY(0.5);opacity:0.4;} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+
+    /* ── SECTION SHARED ── */
+    .section { padding: 96px 0; }
+    .section-alt { background: var(--bg2); }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.8px;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1rem; color: var(--text2);
+      max-width: 520px; line-height: 1.7;
+    }
+    .section-header { margin-bottom: 56px; }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border2), transparent);
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 40px; position: relative; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(79,70,229,0.08);
+    }
+    .about-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad);
+    }
+    .about-card-title {
+      font-size: 1.6rem; font-weight: 700; margin-bottom: 16px;
+    }
+    .about-card-text { color: var(--text2); line-height: 1.8; margin-bottom: 24px; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .about-tag {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 100px;
+      font-size: 0.82rem; color: var(--text2);
+    }
+    .about-float {
+      position: absolute; bottom: -24px; right: -24px;
+      background: #fff;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 8px 32px rgba(79,70,229,0.12);
+    }
+    .about-float-icon { font-size: 2rem; }
+    .about-float-num { font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800; }
+    .about-float-label { font-size:0.78rem; color:var(--text3); }
+    .about-values { display: flex; flex-direction: column; gap: 24px; }
+    .about-value {
+      display: flex; gap: 18px; align-items: flex-start;
+    }
+    .about-value-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(79,70,229,0.08);
+    }
+    .about-value-title { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:4px; }
+    .about-value-text { font-size:0.9rem; color:var(--text2); line-height:1.6; }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+    }
+    .service-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 36px 32px;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(79,70,229,0.06);
+    }
+    .service-card::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: var(--radius2);
+      background: var(--grad);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .service-card:hover { transform: translateY(-6px); border-color: rgba(79,70,229,0.3); box-shadow: 0 20px 60px rgba(79,70,229,0.15); }
+    .service-card:hover::after { opacity: 0.03; }
+    .service-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 24px;
+    }
+    .si-1 { background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(79,70,229,0.04)); }
+    .si-2 { background: linear-gradient(135deg, rgba(236,72,153,0.12), rgba(236,72,153,0.04)); }
+    .si-3 { background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(6,182,212,0.04)); }
+    .si-4 { background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04)); }
+    .service-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 12px; }
+    .service-text { font-size: 0.9rem; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
+    .service-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .service-list li {
+      font-size: 0.85rem; color: var(--text2);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .service-list li::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;
+    }
+    .project-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(79,70,229,0.06);
+    }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 24px 64px rgba(79,70,229,0.15); }
+    .project-img {
+      height: 200px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .project-img-bg {
+      position: absolute; inset: 0;
+    }
+    .project-img-overlay {
+      position: absolute; inset: 0;
+      background: rgba(15,23,42,0.18);
+      transition: background 0.3s;
+    }
+    .project-card:hover .project-img-overlay { background: rgba(15,23,42,0.05); }
+    .project-browser {
+      position: relative; z-index: 1;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(79,70,229,0.15);
+      border-radius: 10px; width: 280px;
+      box-shadow: 0 20px 60px rgba(79,70,229,0.2);
+    }
+    .project-browser-bar {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(79,70,229,0.08);
+      display: flex; gap: 6px; align-items: center;
+    }
+    .pb-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .pb-dot-1 { background: #ff5f57; }
+    .pb-dot-2 { background: #febc2e; }
+    .pb-dot-3 { background: #28c840; }
+    .project-browser-content { padding: 16px; }
+    .pb-bar { height: 6px; border-radius: 3px; background: rgba(79,70,229,0.1); margin-bottom: 8px; }
+    .pb-bar-accent { background: var(--grad); }
+    .pb-blocks { display: flex; gap: 8px; margin-top: 12px; }
+    .pb-block { height: 40px; border-radius: 6px; background: rgba(79,70,229,0.07); flex: 1; }
+    .project-body { padding: 24px; }
+    .project-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .project-tag {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
+      padding: 4px 10px; border-radius: 100px;
+      background: var(--surface2); color: var(--text2);
+    }
+    .project-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; }
+    .project-text { font-size: 0.88rem; color: var(--text2); line-height: 1.65; }
+    .project-footer {
+      padding: 0 24px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.85rem; font-weight: 600;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      transition: gap 0.2s;
+    }
+    .project-link:hover { gap: 10px; }
+    .project-link-arrow { -webkit-text-fill-color: initial; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+    }
+    .testi-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 32px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(79,70,229,0.06);
+    }
+    .testi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(79,70,229,0.12); }
+    .testi-stars { color: #f5a623; margin-bottom: 18px; font-size: 0.9rem; }
+    .testi-text { font-size: 0.95rem; color: var(--text2); line-height: 1.75; margin-bottom: 24px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1rem; color: #fff;
+      flex-shrink: 0;
+    }
+    .ta-1 { background: linear-gradient(135deg,#4f8eff,#7c5cfc); }
+    .ta-2 { background: linear-gradient(135deg,#7c5cfc,#00d9b8); }
+    .ta-3 { background: linear-gradient(135deg,#00d9b8,#4f8eff); }
+    .ta-4 { background: linear-gradient(135deg,#ff6b6b,#ffd93d); }
+    .testi-name { font-weight: 600; font-size: 0.92rem; }
+    .testi-role { font-size: 0.8rem; color: var(--text3); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 760px; margin: 0 auto; }
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 2px 10px rgba(79,70,229,0.05);
+    }
+    .faq-item.open { border-color: rgba(79,70,229,0.35); box-shadow: 0 4px 20px rgba(79,70,229,0.1); }
+    .faq-q {
+      padding: 22px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; font-weight: 600; font-size: 0.97rem;
+      user-select: none;
+    }
+    .faq-q:hover { color: var(--accent); }
+    .faq-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--accent); color: #fff; }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 24px; font-size: 0.9rem; color: var(--text2); line-height: 1.75;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+
+    /* ── BOOKING ── */
+    .booking-wrapper {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 48px;
+      max-width: 880px; margin: 0 auto;
+      box-shadow: 0 8px 40px rgba(79,70,229,0.08);
+    }
+    .booking-header { text-align: center; margin-bottom: 40px; }
+    .booking-steps { display: flex; gap: 12px; justify-content: center; margin-bottom: 36px; }
+    .step-btn {
+      padding: 8px 20px; border-radius: 100px;
+      font-size: 0.85rem; font-weight: 600;
+      border: 1px solid var(--border2);
+      background: var(--surface2); color: var(--text3);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .step-btn.active {
+      background: var(--grad); border-color: transparent; color: #fff;
+    }
+    .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .booking-calendar { }
+    .cal-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .cal-nav-btn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .cal-nav-btn:hover { background: var(--border2); }
+    .cal-month { font-family: 'Syne', sans-serif; font-weight: 700; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; text-align: center; }
+    .cal-day-name { font-size: 0.72rem; color: var(--text3); padding: 6px 0; font-weight: 600; }
+    .cal-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; font-size: 0.88rem; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      border: 1px solid transparent;
+    }
+    .cal-day:hover:not(.disabled):not(.other-month) { background: var(--surface2); border-color: var(--border2); }
+    .cal-day.selected { background: var(--grad); color: #fff; border-color: transparent; }
+    .cal-day.today { border-color: var(--accent); color: var(--accent); }
+    .cal-day.disabled { opacity: 0.3; cursor: not-allowed; }
+    .cal-day.other-month { opacity: 0.25; cursor: default; }
+    .booking-times { }
+    .times-title { font-weight: 600; margin-bottom: 16px; font-size: 0.9rem; }
+    .times-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+    .time-slot {
+      padding: 10px; border-radius: 10px;
+      border: 1px solid var(--border);
+      text-align: center; font-size: 0.85rem;
+      cursor: pointer; transition: all 0.2s;
+      background: var(--surface2); color: var(--text2);
+    }
+    .time-slot:hover:not(.unavailable) { border-color: var(--accent); color: var(--accent); background: #fff; }
+    .time-slot.selected { background: var(--grad); border-color: transparent; color: #fff; }
+    .time-slot.unavailable { opacity: 0.35; cursor: not-allowed; }
+    .booking-form { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+    .booking-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .booking-confirm {
+      margin-top: 8px;
+      background: var(--grad); color: #fff;
+      border: none; border-radius: 100px;
+      padding: 14px 32px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; width: 100%;
+      transition: opacity 0.2s, transform 0.2s;
+      font-family: 'Syne', sans-serif;
+    }
+    .booking-confirm:hover { opacity: 0.88; transform: translateY(-2px); }
+    .booking-success {
+      text-align: center; padding: 32px;
+      display: none;
+    }
+    .booking-success.show { display: block; }
+    .booking-success-icon { font-size: 3rem; margin-bottom: 16px; }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px;
+      align-items: start;
+    }
+    .contact-info { }
+    .contact-info-title { font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+    .contact-info-text { color: var(--text2); line-height: 1.75; margin-bottom: 36px; }
+    .contact-methods { display: flex; flex-direction: column; gap: 18px; }
+    .contact-method {
+      display: flex; gap: 14px; align-items: center;
+    }
+    .contact-method-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-method-label { font-size: 0.78rem; color: var(--text3); }
+    .contact-method-val { font-size: 0.92rem; font-weight: 500; }
+    .social-links { display: flex; gap: 12px; margin-top: 32px; }
+    .social-link {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--surface2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .social-link:hover { transform: translateY(-3px); border-color: var(--accent); background: #fff; box-shadow: 0 4px 16px rgba(79,70,229,0.15); }
+    .contact-form-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 40px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(79,70,229,0.08);
+    }
+    .contact-form-wrap::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad);
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--text2); margin-bottom: 8px; letter-spacing: 0.3px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--text); font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      resize: none; outline: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+    }
+    .form-group textarea { min-height: 120px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-submit {
+      width: 100%;
+      background: var(--grad); color: #fff;
+      border: none; border-radius: 100px;
+      padding: 16px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+      font-family: 'Syne', sans-serif; letter-spacing: 0.3px;
+    }
+    .form-submit:hover { opacity: 0.88; transform: translateY(-2px); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .form-msg {
+      margin-top: 16px; padding: 14px 16px; border-radius: 12px;
+      font-size: 0.9rem; display: none;
+    }
+    .form-msg.success { display: block; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); color: #059669; }
+    .form-msg.error { display: block; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); color: #dc2626; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 56px 0 28px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-brand-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.35rem;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+    }
+    .footer-brand-text { font-size: 0.88rem; color: var(--text3); line-height: 1.7; margin-bottom: 20px; }
+    .footer-col-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 18px; }
+    .footer-links { display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a { font-size: 0.88rem; color: var(--text3); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 0.82rem; color: var(--text3); }
+    .footer-social { display: flex; gap: 10px; }
+    .footer-social-link {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: #fff; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; color: var(--text2);
+      transition: all 0.2s;
+    }
+    .footer-social-link:hover { color: var(--accent); border-color: var(--accent); background: var(--surface2); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Input placeholder */
+    input::placeholder, textarea::placeholder { color: var(--text3); }
+    select option { background: var(--bg3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .booking-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta-desktop { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-stats { gap: 24px; }
+      .section { padding: 64px 0; }
+      .booking-wrapper { padding: 28px 20px; }
+      .contact-form-wrap { padding: 24px; }
+    }
+    @media (max-width: 520px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .booking-form-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" role="navigation" aria-label="Main">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo" aria-label="Voro Web Services Home">Voro<span>.</span>Web</a>
+    <ul class="nav-links" role="list">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Hire Us</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+  <button class="mobile-close" id="mobileClose" aria-label="Close menu">✕</button>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#services" class="mobile-link">Services</a>
+  <a href="#projects" class="mobile-link">Projects</a>
+  <a href="#testimonials" class="mobile-link">Reviews</a>
+  <a href="#booking" class="mobile-link">Book a Call</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" aria-label="Hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Available for new projects — Let's build something great
+      </div>
+      <h1 class="hero-title">
+        We Build Websites<br />
+        That <span class="grad-text">Convert</span> &amp;<br />
+        <span class="grad-text2">Impress.</span>
+      </h1>
+      <p class="hero-sub">
+        Voro Web Services delivers modern, high-performance websites for businesses and individuals. Clean UI, blazing speed, real-world results — that's our standard.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          <span>Hire Us</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#projects" class="btn-secondary">
+          View Our Work
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">20+</div>
+          <div class="hero-stat-label">Projects Delivered</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">Client Satisfaction</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">48h</div>
+          <div class="hero-stat-label">Average Response</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about" class="section section-alt" aria-label="About Us">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="about-card">
+          <h3 class="about-card-title">We're Voro Web Services.</h3>
+          <p class="about-card-text">
+            A small but highly capable web development team passionate about turning ideas into polished digital products. We don't just write code — we craft experiences that reflect your brand and drive growth.
+          </p>
+          <p class="about-card-text" style="margin-bottom:0;">
+            From concept to deployment, we handle the entire process so you can focus on what you do best — running your business.
+          </p>
+          <div class="about-float">
+            <div class="about-float-icon">🏆</div>
+            <div>
+              <div class="about-float-num">20+</div>
+              <div class="about-float-label">Happy Clients</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-tags" style="margin-top:20px;">
+          <span class="about-tag">⚡ Fast Delivery</span>
+          <span class="about-tag">✨ Clean Code</span>
+          <span class="about-tag">📱 Fully Responsive</span>
+          <span class="about-tag">🔒 Secure</span>
+          <span class="about-tag">🚀 SEO Ready</span>
+        </div>
+      </div>
+      <div class="about-values reveal reveal-delay-2">
+        <div class="section-tag">Who We Are</div>
+        <h2 class="section-title">Built on Passion,<br/>Delivered with Precision.</h2>
+        <p class="section-sub" style="margin-bottom:36px;">We're a team of passionate developers who believe every business deserves a website that truly works — both technically and visually.</p>
+        <div class="about-value">
+          <div class="about-value-icon">⚡</div>
+          <div>
+            <div class="about-value-title">Performance First</div>
+            <div class="about-value-text">Every site we build is optimized for speed. We target 90+ PageSpeed scores because performance is a competitive advantage.</div>
+          </div>
+        </div>
+        <div class="about-value">
+          <div class="about-value-icon">🎨</div>
+          <div>
+            <div class="about-value-title">Design That Converts</div>
+            <div class="about-value-text">Beautiful isn't enough. We design with conversion in mind — clear CTAs, intuitive UX, and interfaces that guide users toward action.</div>
+          </div>
+        </div>
+        <div class="about-value">
+          <div class="about-value-icon">🤝</div>
+          <div>
+            <div class="about-value-title">Transparent Process</div>
+            <div class="about-value-text">We keep you in the loop at every stage. No surprises, no hidden fees — just clear communication and reliable delivery.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SERVICES -->
+<section id="services" class="section" aria-label="Services">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">What We Do</div>
+      <h2 class="section-title">Services Built for<br/>Real Business Results.</h2>
+      <p class="section-sub">From idea to launch, we offer everything you need to establish a powerful online presence.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon si-1">🌐</div>
+        <h3 class="service-title">Web Development</h3>
+        <p class="service-text">Full-stack websites and web apps built with modern frameworks. Scalable, secure, and production-ready.</p>
+        <ul class="service-list">
+          <li>React / Next.js development</li>
+          <li>Custom CMS integration</li>
+          <li>API & backend development</li>
+          <li>Performance optimization</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon si-2">🎨</div>
+        <h3 class="service-title">UI/UX Design</h3>
+        <p class="service-text">Interfaces that delight users and reflect your brand. We design with function and beauty in equal measure.</p>
+        <ul class="service-list">
+          <li>Wireframing & prototyping</li>
+          <li>Design systems & components</li>
+          <li>Mobile-first responsive design</li>
+          <li>Brand-aligned aesthetics</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon si-3">💼</div>
+        <h3 class="service-title">Portfolio Websites</h3>
+        <p class="service-text">Personal portfolios that help freelancers, creators, and professionals stand out and land more opportunities.</p>
+        <ul class="service-list">
+          <li>Personal branding sites</li>
+          <li>Creative showcase layouts</li>
+          <li>Resume/CV integration</li>
+          <li>Contact & booking flows</li>
+        </ul>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon si-4">🏢</div>
+        <h3 class="service-title">Business Websites</h3>
+        <p class="service-text">Professional sites for startups, local businesses, and growing companies that need to make a strong first impression.</p>
+        <ul class="service-list">
+          <li>Landing pages & lead gen</li>
+          <li>E-commerce integration</li>
+          <li>SEO & analytics setup</li>
+          <li>Ongoing maintenance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects" class="section section-alt" aria-label="Projects">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Our Work</div>
+      <h2 class="section-title">Projects We're<br/>Proud Of.</h2>
+      <p class="section-sub">A selection of recent work built for real clients with real results.</p>
+    </div>
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-card reveal">
+        <div class="project-img">
+          <div class="project-img-bg" style="background: linear-gradient(135deg, #0d1b40 0%, #1a0d40 100%);"></div>
+          <div class="project-img-overlay"></div>
+          <div class="project-browser">
+            <div class="project-browser-bar">
+              <div class="pb-dot pb-dot-1"></div>
+              <div class="pb-dot pb-dot-2"></div>
+              <div class="pb-dot pb-dot-3"></div>
+            </div>
+            <div class="project-browser-content">
+              <div class="pb-bar pb-bar-accent" style="width:60%"></div>
+              <div class="pb-bar" style="width:80%"></div>
+              <div class="pb-bar" style="width:45%"></div>
+              <div class="pb-blocks">
+                <div class="pb-block"></div>
+                <div class="pb-block" style="background:linear-gradient(135deg,rgba(79,70,229,0.15),rgba(236,72,153,0.15))"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">React</span>
+            <span class="project-tag">Next.js</span>
+            <span class="project-tag">Tailwind</span>
+          </div>
+          <h3 class="project-title">SaaS Dashboard Platform</h3>
+          <p class="project-text">A full-featured SaaS analytics dashboard with real-time data visualization, user management, and subscription billing integration.</p>
+        </div>
+        <div class="project-footer">
+          <a href="#contact" class="project-link">Start Similar Project <span class="project-link-arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-img">
+          <div class="project-img-bg" style="background: linear-gradient(135deg, #0d2b1a 0%, #061a2b 100%);"></div>
+          <div class="project-img-overlay"></div>
+          <div class="project-browser">
+            <div class="project-browser-bar">
+              <div class="pb-dot pb-dot-1"></div>
+              <div class="pb-dot pb-dot-2"></div>
+              <div class="pb-dot pb-dot-3"></div>
+            </div>
+            <div class="project-browser-content">
+              <div class="pb-bar pb-bar-accent" style="width:50%; background: linear-gradient(90deg,#06b6d4,#4f46e5);"></div>
+              <div class="pb-bar" style="width:70%"></div>
+              <div class="pb-bar" style="width:55%"></div>
+              <div class="pb-blocks">
+                <div class="pb-block" style="background:rgba(6,182,212,0.15)"></div>
+                <div class="pb-block"></div>
+                <div class="pb-block" style="background:rgba(6,182,212,0.1)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">E-Commerce</span>
+            <span class="project-tag">Shopify</span>
+            <span class="project-tag">Custom Theme</span>
+          </div>
+          <h3 class="project-title">Boutique E-Commerce Store</h3>
+          <p class="project-text">A premium Shopify store with a custom-built theme, product filtering, abandoned cart recovery, and a 3x improvement in conversion rate.</p>
+        </div>
+        <div class="project-footer">
+          <a href="#contact" class="project-link">Start Similar Project <span class="project-link-arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-img">
+          <div class="project-img-bg" style="background: linear-gradient(135deg, #2b1a0d 0%, #2b0d1a 100%);"></div>
+          <div class="project-img-overlay"></div>
+          <div class="project-browser">
+            <div class="project-browser-bar">
+              <div class="pb-dot pb-dot-1"></div>
+              <div class="pb-dot pb-dot-2"></div>
+              <div class="pb-dot pb-dot-3"></div>
+            </div>
+            <div class="project-browser-content">
+              <div class="pb-bar pb-bar-accent" style="width:40%; background: linear-gradient(90deg,#ff6b6b,#ffd93d);"></div>
+              <div class="pb-bar" style="width:75%"></div>
+              <div class="pb-blocks">
+                <div class="pb-block" style="background:rgba(236,72,153,0.15); height:60px; border-radius:8px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="project-tag">Portfolio</span>
+            <span class="project-tag">Animation</span>
+            <span class="project-tag">GSAP</span>
+          </div>
+          <h3 class="project-title">Creative Agency Portfolio</h3>
+          <p class="project-text">An award-worthy creative agency website with cinematic scroll animations, custom cursor, and a case study showcase that drives client inquiries.</p>
+        </div>
+        <div class="project-footer">
+          <a href="#contact" class="project-link">Start Similar Project <span class="project-link-arrow">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="section" aria-label="Testimonials">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="section-tag">Client Reviews</div>
+      <h2 class="section-title">Trusted by Clients<br/>Across Industries.</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Voro Web delivered exactly what we envisioned — and more. Our new site loads in under 2 seconds and the leads have been pouring in since launch."</p>
+        <div class="testi-author">
+          <div class="testi-avatar ta-1">RK</div>
+          <div>
+            <div class="testi-name">Rohan K.</div>
+            <div class="testi-role">Founder, TechFlow Startup</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Working with Voro was seamless from start to finish. They understood our brand immediately and built a site that feels premium. Worth every penny."</p>
+        <div class="testi-author">
+          <div class="testi-avatar ta-2">SA</div>
+          <div>
+            <div class="testi-name">Sneha A.</div>
+            <div class="testi-role">Owner, Artisan Boutique</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"They revamped our outdated site into a modern, fast, and stunning platform. Our bounce rate dropped 40% in the first month. Highly recommend Voro."</p>
+        <div class="testi-author">
+          <div class="testi-avatar ta-3">MV</div>
+          <div>
+            <div class="testi-name">Mihir V.</div>
+            <div class="testi-role">Marketing Director, GrowBase</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal reveal-delay-3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Fast turnaround, clean code, and the result looks absolutely professional. They went above and beyond. My portfolio site stands out from the crowd."</p>
+        <div class="testi-author">
+          <div class="testi-avatar ta-4">PJ</div>
+          <div>
+            <div class="testi-name">Priya J.</div>
+            <div class="testi-role">Freelance Designer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BOOKING -->
+<section id="booking" class="section section-alt" aria-label="Book a Call">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="section-tag">Schedule a Call</div>
+      <h2 class="section-title">Book a Free Consultation.</h2>
+      <p class="section-sub" style="margin:0 auto;">Pick a time that works for you and let's discuss your project. No strings attached.</p>
+    </div>
+    <div class="booking-wrapper reveal">
+      <div id="bookingMain">
+        <div class="booking-grid">
+          <div class="booking-calendar">
+            <div class="cal-nav">
+              <button class="cal-nav-btn" id="calPrev" aria-label="Previous month">‹</button>
+              <div class="cal-month" id="calMonthLabel"></div>
+              <button class="cal-nav-btn" id="calNext" aria-label="Next month">›</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+          <div class="booking-times">
+            <div class="times-title" id="timesTitle">Select a date to see available times</div>
+            <div class="times-grid" id="timesGrid"></div>
+            <div class="booking-form" id="bookingForm" style="display:none">
+              <div class="booking-form-grid">
+                <div class="form-group" style="margin:0">
+                  <label>Your Name</label>
+                  <input type="text" id="bookName" placeholder="Alex Smith" />
+                </div>
+                <div class="form-group" style="margin:0">
+                  <label>Email</label>
+                  <input type="email" id="bookEmail" placeholder="you@example.com" />
+                </div>
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>What's your project about?</label>
+                <input type="text" id="bookProject" placeholder="e.g. Portfolio site for my design business" />
+              </div>
+              <button class="booking-confirm" id="bookConfirm">Confirm Booking →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="booking-success" id="bookingSuccess">
+        <div class="booking-success-icon">🎉</div>
+        <h3 style="font-size:1.5rem;margin-bottom:10px;">You're booked!</h3>
+        <p id="bookingSuccessMsg" style="color:var(--text2);"></p>
+        <p style="margin-top:16px;font-size:0.88rem;color:var(--text3);">We'll send a confirmation to your email and reach out before the call.</p>
+        <button class="btn-primary" style="margin-top:24px;border:none;cursor:pointer;" onclick="resetBooking()">Book Another Time</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section id="faq" class="section" aria-label="FAQ">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Common Questions.</h2>
+    </div>
+    <div class="faq-list" role="list">
+      <div class="faq-item reveal" role="listitem">
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">
+          How much does a website cost?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Pricing depends on the scope and complexity of the project. A standard business website typically starts at ₹8,000–₹20,000. Portfolio sites and landing pages can be more affordable. We offer custom quotes after a free consultation — reach out to get an accurate estimate for your project.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1" role="listitem">
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">
+          How long does it take to build a website?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Most projects are completed within 1–3 weeks depending on complexity. Simple landing pages can be ready in as little as 3–5 days. We always provide a clear timeline before starting so you know exactly when to expect your site.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2" role="listitem">
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">
+          What do I need to provide to get started?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Generally, we need your brand assets (logo, colors, fonts if you have them), the content you want on the site (text, images), and a clear idea of your goals. Don't worry if you're starting from scratch — we can help with content structure and design direction too.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3" role="listitem">
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">
+          Will my website be mobile-friendly?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Absolutely. Every website we build is fully responsive — meaning it looks and works great on all screen sizes, from smartphones to desktop monitors. Mobile optimization is a non-negotiable part of our development process.</div>
+      </div>
+      <div class="faq-item reveal" role="listitem">
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">
+          Do you offer ongoing support after launch?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Yes. We offer post-launch support and maintenance packages. Whether it's a content update, a new feature, or a bug fix, we're here to help. We also provide a short handover session so you can manage basic updates yourself if you prefer.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1" role="listitem">
+        <div class="faq-q" tabindex="0" role="button" aria-expanded="false">
+          Can you work with existing websites / redesigns?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">Yes, we handle redesigns and improvements to existing sites regularly. Whether it's a full overhaul or targeted improvements to specific pages, we can audit your current site and propose a plan that maximizes impact for your budget.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="section section-alt" aria-label="Contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="section-tag">Get In Touch</div>
+        <h2 class="contact-info-title">Let's Build<br/>Something Together.</h2>
+        <p class="contact-info-text">Have a project in mind? Drop us a message and we'll get back to you within 24 hours. We're ready to help bring your vision to life.</p>
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="contact-method-icon">📧</div>
+            <div>
+              <div class="contact-method-label">Email Us</div>
+              <div class="contact-method-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="22544d504d0c554740514750544b414762454f434b4e0c414d4f">[email&#160;protected]</a></div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method-icon">📍</div>
+            <div>
+              <div class="contact-method-label">Location</div>
+              <div class="contact-method-val">India (Remote Worldwide)</div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method-icon">⏱️</div>
+            <div>
+              <div class="contact-method-label">Response Time</div>
+              <div class="contact-method-val">Within 24 hours</div>
+            </div>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/voroweb/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="/cdn-cgi/l/email-protection#5e28312c3170293b3c2d3b2c28373d3b1e39333f3732703d3133" class="social-link" aria-label="Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal reveal-delay-2">
+        <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:24px;">Send Us a Message</h3>
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cName">Your Name *</label>
+              <input type="text" id="cName" name="from_name" placeholder="Alex Smith" required />
+            </div>
+            <div class="form-group">
+              <label for="cEmail">Email Address *</label>
+              <input type="email" id="cEmail" name="from_email" placeholder="you@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cService">Service Interested In</label>
+            <select id="cService" name="service">
+              <option value="">Select a service...</option>
+              <option>Web Development</option>
+              <option>UI/UX Design</option>
+              <option>Portfolio Website</option>
+              <option>Business Website</option>
+              <option>Other / Not Sure Yet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cMsg">Your Message *</label>
+            <textarea id="cMsg" name="message" placeholder="Tell us about your project — goals, timeline, budget, anything you'd like us to know..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="formSubmit">Send Message →</button>
+          <div class="form-msg" id="formMsg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-logo">Voro Web Services</div>
+        <p class="footer-brand-text">Modern web development for businesses and individuals who demand quality. Clean code, fast sites, real results.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/voroweb/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="/cdn-cgi/l/email-protection#2b5d445944055c4e49584e595d42484e6b4c464a424705484446" class="footer-social-link" aria-label="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a href="#services">Web Development</a>
+          <a href="#services">UI/UX Design</a>
+          <a href="#services">Portfolio Sites</a>
+          <a href="#services">Business Websites</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <a href="#about">About Us</a>
+          <a href="#projects">Our Work</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links">
+          <a href="/cdn-cgi/l/email-protection#9bedf4e9f4b5ecfef9e8fee9edf2f8fedbfcf6faf2f7b5f8f4f6"><span class="__cf_email__" data-cfemail="72041d001d5c051710011700041b111732151f131b1e5c111d1f">[email&#160;protected]</span></a>
+          <a href="#booking">Book a Consultation</a>
+          <a href="https://www.instagram.com/voroweb/" target="_blank" rel="noopener noreferrer">@voroweb on Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Voro Web Services. All rights reserved.</div>
+      <div class="footer-copy">Built with ❤️ and a lot of coffee.</div>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── EMAILJS SETUP ──
+// HOW TO ENABLE REAL EMAIL DELIVERY (takes ~5 minutes, free):
+//
+// 1. Go to https://www.emailjs.com → sign up free
+// 2. Dashboard → Email Services → Add Service → Gmail → connect voro.webservice@gmail.com
+// 3. Dashboard → Email Templates → Create Template with these variables:
+//      Subject:  New enquiry from {{from_name}} — {{service}}
+//      Body:     Name: {{from_name}}
+//                Email: {{from_email}}
+//                Service: {{service}}
+//                Message: {{message}}
+// 4. Copy your keys from Dashboard → Account → API Keys
+// 5. Replace the three placeholder strings below with your real keys.
+
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // Account → API Keys → Public Key
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // Email Services → your service ID
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // Email Templates → your template ID
+
+const EMAIL_READY = (
+  EMAILJS_PUBLIC_KEY  !== 'YOUR_PUBLIC_KEY' &&
+  EMAILJS_SERVICE_ID  !== 'YOUR_SERVICE_ID' &&
+  EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID'
+);
+
+(function() {
+  if (typeof emailjs !== 'undefined' && EMAIL_READY) {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }
+})();
+
+// ── NAVBAR SCROLL ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── MOBILE MENU ──
+const hamburger = document.getElementById('hamburgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileClose = document.getElementById('mobileClose');
+
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.add('open');
+  hamburger.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+});
+mobileClose.addEventListener('click', () => {
+  mobileMenu.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// ── FAQ ──
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) {
+      item.classList.add('open');
+      q.setAttribute('aria-expanded', 'true');
+    }
+  });
+  q.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q.click(); } });
+});
+
+// ── CALENDAR BOOKING ──
+let calYear, calMonth, selectedDate = null, selectedTime = null;
+const now = new Date();
+calYear = now.getFullYear(); calMonth = now.getMonth();
+
+const timeSlots = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM'];
+const unavailableSlots = [1, 4, 7]; // index
+
+function renderCalendar() {
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonthLabel').textContent = `${monthNames[calMonth]} ${calYear}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-name'; el.textContent = d;
+    grid.appendChild(el);
+  });
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const daysInPrev = new Date(calYear, calMonth, 0).getDate();
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day other-month';
+    el.textContent = daysInPrev - firstDay + 1 + i;
+    grid.appendChild(el);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+    const dateObj = new Date(calYear, calMonth, d);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+    if (dateObj < today || isWeekend) {
+      el.classList.add('disabled');
+    } else {
+      if (dateObj.toDateString() === today.toDateString()) el.classList.add('today');
+      if (selectedDate && dateObj.toDateString() === selectedDate.toDateString()) el.classList.add('selected');
+      el.addEventListener('click', () => selectDate(dateObj));
+    }
+    grid.appendChild(el);
+  }
+  const remaining = 42 - firstDay - daysInMonth;
+  for (let i = 1; i <= remaining; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day other-month'; el.textContent = i;
+    grid.appendChild(el);
+  }
+}
+
+function selectDate(date) {
+  selectedDate = date; selectedTime = null;
+  renderCalendar(); renderTimes();
+}
+
+function renderTimes() {
+  if (!selectedDate) return;
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('timesTitle').textContent = `${days[selectedDate.getDay()]}, ${months[selectedDate.getMonth()]} ${selectedDate.getDate()}`;
+  const grid = document.getElementById('timesGrid');
+  grid.innerHTML = '';
+  timeSlots.forEach((slot, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'time-slot' + (unavailableSlots.includes(i) ? ' unavailable' : '');
+    btn.textContent = slot;
+    btn.type = 'button';
+    if (selectedTime === slot) btn.classList.add('selected');
+    if (!unavailableSlots.includes(i)) {
+      btn.addEventListener('click', () => { selectedTime = slot; renderTimes(); showBookingForm(); });
+    }
+    grid.appendChild(btn);
+  });
+}
+
+function showBookingForm() {
+  if (selectedDate && selectedTime) {
+    document.getElementById('bookingForm').style.display = 'flex';
+  }
+}
+
+document.getElementById('calPrev').addEventListener('click', () => {
+  calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
+});
+document.getElementById('calNext').addEventListener('click', () => {
+  calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
+});
+
+document.getElementById('bookConfirm').addEventListener('click', () => {
+  const name = document.getElementById('bookName').value.trim();
+  const email = document.getElementById('bookEmail').value.trim();
+  const project = document.getElementById('bookProject').value.trim();
+  if (!name || !email || !selectedDate || !selectedTime) {
+    alert('Please fill in your name, email, and select a date and time.'); return;
+  }
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dateStr = `${months[selectedDate.getMonth()]} ${selectedDate.getDate()}, ${selectedDate.getFullYear()} at ${selectedTime}`;
+  document.getElementById('bookingMain').style.display = 'none';
+  const success = document.getElementById('bookingSuccess');
+  success.classList.add('show');
+  document.getElementById('bookingSuccessMsg').textContent = `Your consultation is set for ${dateStr}. We'll reach out to ${email} to confirm.`;
+
+  // Send booking confirmation email
+  if (typeof emailjs !== 'undefined' && EMAIL_READY) {
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      from_name: name,
+      from_email: email,
+      message: `📅 Booking request for ${dateStr}.\nProject: ${project || 'Not specified'}`,
+      service: 'Consultation Booking',
+    });
+  }
+});
+
+function resetBooking() {
+  selectedDate = null; selectedTime = null;
+  document.getElementById('bookName').value = '';
+  document.getElementById('bookEmail').value = '';
+  document.getElementById('bookProject').value = '';
+  document.getElementById('bookingForm').style.display = 'none';
+  document.getElementById('timesGrid').innerHTML = '';
+  document.getElementById('timesTitle').textContent = 'Select a date to see available times';
+  document.getElementById('bookingMain').style.display = 'block';
+  document.getElementById('bookingSuccess').classList.remove('show');
+  calYear = now.getFullYear(); calMonth = now.getMonth();
+  renderCalendar();
+}
+
+renderCalendar();
+
+// ── CONTACT FORM ──
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('formSubmit');
+  const msg = document.getElementById('formMsg');
+  const name = document.getElementById('cName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const message = document.getElementById('cMsg').value.trim();
+  const service = document.getElementById('cService').value || 'Not specified';
+
+  if (!name || !email || !message) {
+    msg.className = 'form-msg error';
+    msg.textContent = 'Please fill in all required fields.';
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    msg.className = 'form-msg error';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  msg.className = 'form-msg';
+
+  try {
+    if (typeof emailjs !== 'undefined' && EMAIL_READY) {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        from_name: name,
+        from_email: email,
+        message: message,
+        service: service,
+      });
+      msg.className = 'form-msg success';
+      msg.textContent = '✓ Message sent! We\'ll get back to you within 24 hours.';
+      this.reset();
+    } else {
+      // Demo mode — EmailJS keys not yet configured
+      await new Promise(r => setTimeout(r, 1000));
+      msg.className = 'form-msg success';
+      msg.textContent = '✓ Got it! (To deliver real emails: add your EmailJS keys — see SETUP.md for steps.)';
+      this.reset();
+    }
+  } catch(err) {
+    msg.className = 'form-msg error';
+    msg.textContent = '✗ Sending failed. Please email us at voro.webservice@gmail.com';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Send Message →';
+});
+</script>
+</body>
+</html>
